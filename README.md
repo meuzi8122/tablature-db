@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## ローカル実行
 
-## Getting Started
+- npm ci
+- npm run dev
 
-First, run the development server:
+## 実装メモ
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### パスパラメータの取得方法(Next15・Dynamic Routing)
+
+- props.paramsから取得
+
+```
+type Props = {
+    params: Promise<{...}>;
+};
+
+export default function Page({ params }: Props) {
+    const { ... } = await params;
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### クエリパラメータの取得方法(Next15)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- props.searchParamsから取得
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+type Props = {
+    searchParams: Promise<{...}>;
+};
 
-## Learn More
+export default function Page({ searchParams }: Props) {
+    const { ... } = await searchParams;
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+### MicroCMS
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- MicroCMS APIで他コンテンツ参照のあるコンテンツを取得する場合、他コンテンツのIDのみ絞り込みが可能
+    - 参考: https://help.microcms.io/ja/knowledge/contents-relation-search
+- セレクトフィールドのカラムで絞り込む場合はequalsではなくcontainsを指定する。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+static async findTablaturesByTitle(keyword: string, instrument: string): Promise<Tablature[]> {
+    return await client.getAllContents({
+        endpoint: this.endpoint,
+        queries: {
+            fields: this.fields,
+            filters: `title[contains]${keyword}[and]instrument[contains]${instrument}`,
+        },
+    });
+}
+```
 
-## Deploy on Vercel
+## Jest
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 設定ファイルでルートディレクトリを記載する場合は`<rootDir>`を記載する。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"]
+```
+
+## その他
+
+- git-pushでパスワード入力を求められたら、パスワードではなくアクセストークンを入力する。
