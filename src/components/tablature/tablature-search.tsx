@@ -8,10 +8,10 @@ import { useState } from "react";
 type Props = {
     artistId?: string;
     artists: Artist[];
-    tablatures?: Tablature[];
+    tablatures: Tablature[];
 };
 
-export function TablatureSearch({ artistId, artists, tablatures = [] }: Props) {
+export function TablatureSearch({ artistId, artists, tablatures }: Props) {
     const router = useRouter();
 
     const handleArtistButtonClick = (_artistId: string) => {
@@ -42,6 +42,16 @@ export function TablatureSearch({ artistId, artists, tablatures = [] }: Props) {
 
         return true;
     });
+
+    const result = (() => {
+        if (artistId == null) {
+            if (filteredTablatures.length === 0) return "条件に一致するTAB譜が見つかりませんでした";
+            return "最近追加されたTAB譜";
+        }
+
+        if (filteredTablatures.length === 0) return "条件に一致するTAB譜が見つかりませんでした";
+        return `${filteredTablatures.length}件のTAB譜が見つかりました`;
+    })();
 
     const getButtonClass = (isActive: boolean) => `btn rounded-md ${isActive ? "btn-primary" : ""}`;
 
@@ -100,37 +110,19 @@ export function TablatureSearch({ artistId, artists, tablatures = [] }: Props) {
                 </div>
             </div>
             <ul className="list bg-base-100 rounded-box shadow-md">
-                <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">
-                    {filteredTablatures.length === 0
-                        ? "条件に一致するTAB譜が見つかりませんでした"
-                        : `${filteredTablatures.length}件のTAB譜が見つかりました`}
-                </li>
+                <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">{result}</li>
                 {filteredTablatures.map((tablature) => (
-                    <li className="list-row">
+                    <li className="list-row" key={tablature.id}>
                         <div>
-                            <div>{tablature.title}</div>
+                            <div>
+                                <a href={tablature.url} target="_blank">
+                                    {tablature.title}
+                                </a>
+                            </div>
                             <div className="text-xs uppercase font-semibold opacity-60">
-                                Remaining Reason
+                                {tablature.owner ?? "配信元サイト不明"}
                             </div>
                         </div>
-                        <div></div>
-                        <button className="btn btn-square btn-ghost">
-                            <svg
-                                className="size-[1.2em]"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                            >
-                                <g
-                                    strokeLinejoin="round"
-                                    strokeLinecap="round"
-                                    strokeWidth="2"
-                                    fill="none"
-                                    stroke="currentColor"
-                                >
-                                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
-                                </g>
-                            </svg>
-                        </button>
                     </li>
                 ))}
             </ul>
