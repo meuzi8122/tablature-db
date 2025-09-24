@@ -1,3 +1,2 @@
 @import "tailwindcss";
-@plugin "flyonui";
-@plugin "@iconify/tailwind4";
+@plugin "daisyui";
