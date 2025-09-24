@@ -5,7 +5,7 @@ export default async function IndexPage() {
     const artists = await findArtists();
 
     return (
-        <div className="container mx-auto mt-5">
+        <div className="container mx-auto">
             <TablatureSearch artists={artists} />
         </div>
     );
