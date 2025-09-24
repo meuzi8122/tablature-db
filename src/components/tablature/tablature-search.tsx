@@ -47,10 +47,9 @@ export function TablatureSearch({ artistId, artists, tablatures = [] }: Props) {
 
     return (
         <div className="flex flex-col space-y-3">
-            <div className="shadow-md p-3">
-                {/* アーティストが増えたら枠の中でスクロールできるようにする */}
+            <div className="shadow-md p-4">
                 <h3 className="mb-2 font-bold">アーティスト</h3>
-                <div className="flex flex-wrap space-x-2 space-y-2">
+                <div className="flex space-x-2 flex-wrap space-y-2 overflow-y-scroll max-h-30">
                     {artists.map((_artist) => (
                         <button
                             key={_artist.id}
@@ -66,19 +65,23 @@ export function TablatureSearch({ artistId, artists, tablatures = [] }: Props) {
                 <div>
                     <h3 className="mb-2 font-bold">楽器</h3>
                     <div className="flex space-x-2">
-                        {["エレキギター", "アコースティックギター", "エレキベース"].map(
-                            (_instrument, index) => (
-                                <button
-                                    key={`${_instrument}-${index}`}
-                                    className={getButtonClass(_instrument === instrument)}
-                                    onClick={() =>
-                                        handleInstrumentButtonClick(_instrument as Instrument)
-                                    }
-                                >
-                                    {_instrument}
-                                </button>
-                            ),
-                        )}
+                        {[
+                            "エレキギター",
+                            "アコースティックギター",
+                            "エレキベース",
+                            "アコースティックベース",
+                            "ウクレレ",
+                        ].map((_instrument, index) => (
+                            <button
+                                key={`${_instrument}-${index}`}
+                                className={getButtonClass(_instrument === instrument)}
+                                onClick={() =>
+                                    handleInstrumentButtonClick(_instrument as Instrument)
+                                }
+                            >
+                                {_instrument}
+                            </button>
+                        ))}
                     </div>
                 </div>
                 <div>
@@ -96,12 +99,41 @@ export function TablatureSearch({ artistId, artists, tablatures = [] }: Props) {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col space-y-2">
+            <ul className="list bg-base-100 rounded-box shadow-md">
+                <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">
+                    {filteredTablatures.length === 0
+                        ? "条件に一致するTAB譜が見つかりませんでした"
+                        : `${filteredTablatures.length}件のTAB譜が見つかりました`}
+                </li>
                 {filteredTablatures.map((tablature) => (
-                    <div key={tablature.id}>{tablature.title}</div>
+                    <li className="list-row">
+                        <div>
+                            <div>{tablature.title}</div>
+                            <div className="text-xs uppercase font-semibold opacity-60">
+                                Remaining Reason
+                            </div>
+                        </div>
+                        <div></div>
+                        <button className="btn btn-square btn-ghost">
+                            <svg
+                                className="size-[1.2em]"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                            >
+                                <g
+                                    strokeLinejoin="round"
+                                    strokeLinecap="round"
+                                    strokeWidth="2"
+                                    fill="none"
+                                    stroke="currentColor"
+                                >
+                                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                                </g>
+                            </svg>
+                        </button>
+                    </li>
                 ))}
-            </div>
-            {filteredTablatures.length === 0 && <div className="mt-4">TAB譜が見つかりません</div>}
+            </ul>
         </div>
     );
 }
