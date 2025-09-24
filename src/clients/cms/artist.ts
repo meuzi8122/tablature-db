@@ -10,6 +10,7 @@ export async function findArtists() {
         endpoint: "artists",
         queries: {
             fields: "id,name",
+            orders: "name",
         },
     });
 }
