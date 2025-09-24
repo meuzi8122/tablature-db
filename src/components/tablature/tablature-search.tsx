@@ -110,7 +110,7 @@ export function TablatureSearch({ artistId, artists, tablatures }: Props) {
                 </div>
             </div>
             <ul className="list bg-base-100 rounded-box shadow-md">
-                <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">{result}</li>
+                <li className="text-sm p-4 pb-2 opacity-60 tracking-wide">{result}</li>
                 {filteredTablatures.map((tablature) => (
                     <li className="list-row" key={tablature.id}>
                         <div>
