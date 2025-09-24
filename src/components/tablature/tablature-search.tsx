@@ -114,12 +114,12 @@ export function TablatureSearch({ artistId, artists, tablatures }: Props) {
                 {filteredTablatures.map((tablature) => (
                     <li className="list-row" key={tablature.id}>
                         <div>
-                            <div>
+                            <div className="text-lg">
                                 <a href={tablature.url} target="_blank">
                                     {tablature.title}
                                 </a>
                             </div>
-                            <div className="text-xs uppercase font-semibold opacity-60">
+                            <div className="text-sm uppercase font-semibold opacity-60">
                                 {tablature.owner ?? "配信元サイト不明"}
                             </div>
                         </div>
