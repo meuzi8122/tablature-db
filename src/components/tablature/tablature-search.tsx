@@ -115,7 +115,11 @@ export function TablatureSearch({ artistId, artists, tablatures }: Props) {
                     <li className="list-row" key={tablature.id}>
                         <div>
                             <div className="text-lg">
-                                <a href={tablature.url} target="_blank">
+                                <a
+                                    href={tablature.url}
+                                    className="link link-primary no-underline"
+                                    target="_blank"
+                                >
                                     {tablature.title}
                                 </a>
                             </div>
