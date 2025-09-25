@@ -12,7 +12,7 @@ export default async function TablatureSearchPage({ params }: Props) {
     const tablatures = await TablatureClient.findTablatures(artistId);
 
     return (
-        <div className="container mx-auto">
+        <div className="container mx-auto mb-2">
             <TablatureSearch artistId={artistId} artists={artists} tablatures={tablatures} />
         </div>
     );

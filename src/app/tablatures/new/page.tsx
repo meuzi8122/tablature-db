@@ -5,7 +5,7 @@ export default async function TablatureNewPage() {
     const artists = await ArtistClient.findArtists();
 
     return (
-        <div className="container mx-auto">
+        <div className="container mx-auto mb-2">
             <h1 className="mb-5 text-xl">TAB譜を投稿</h1>
             <TablatureForm artists={artists} />
         </div>

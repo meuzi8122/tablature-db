@@ -7,7 +7,7 @@ export default async function IndexPage() {
     const tablatures = await TablatureClient.findLatestTablatures();
 
     return (
-        <div className="container mx-auto">
+        <div className="container mx-auto mb-2">
             <TablatureSearch artists={artists} tablatures={tablatures} />
         </div>
     );
