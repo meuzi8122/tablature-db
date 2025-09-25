@@ -4,6 +4,8 @@ import type { Artist } from "@/clients/cms/artist";
 import type { Instrument, Tablature } from "@/clients/cms/tablature";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ArtistSection } from "./artist-section";
+import { OtherInfoSection } from "./other-info-section";
 
 type Props = {
     artistId?: string;
@@ -53,62 +55,19 @@ export function TablatureSearch({ artistId, artists, tablatures }: Props) {
         return `${filteredTablatures.length}件のTAB譜が見つかりました`;
     })();
 
-    const getButtonClass = (isActive: boolean) => `btn rounded-md ${isActive ? "btn-primary" : ""}`;
-
     return (
         <div className="flex flex-col space-y-3">
-            <div className="shadow-md p-4">
-                <h3 className="mb-2 font-bold">アーティスト</h3>
-                <div className="flex space-x-2 flex-wrap space-y-2 overflow-y-scroll max-h-30">
-                    {artists.map((_artist) => (
-                        <button
-                            key={_artist.id}
-                            className={getButtonClass(_artist.id === artistId)}
-                            onClick={() => handleArtistButtonClick(_artist.id)}
-                        >
-                            {_artist.name}
-                        </button>
-                    ))}
-                </div>
-            </div>
-            <div className="flex flex-col space-y-4 shadow-md p-4">
-                <div>
-                    <h3 className="mb-2 font-bold">楽器</h3>
-                    <div className="flex space-x-2">
-                        {[
-                            "エレキギター",
-                            "アコースティックギター",
-                            "エレキベース",
-                            "アコースティックベース",
-                            "ウクレレ",
-                        ].map((_instrument, index) => (
-                            <button
-                                key={`${_instrument}-${index}`}
-                                className={getButtonClass(_instrument === instrument)}
-                                onClick={() =>
-                                    handleInstrumentButtonClick(_instrument as Instrument)
-                                }
-                            >
-                                {_instrument}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-                <div>
-                    <h3 className="mb-2 font-bold">弦数</h3>
-                    <div className="flex space-x-2">
-                        {[4, 5, 6, 7].map((_strings) => (
-                            <button
-                                key={`strings-${_strings}`}
-                                className={getButtonClass(_strings === strings)}
-                                onClick={() => handleStringsButtonClick(_strings)}
-                            >
-                                {_strings}弦
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            </div>
+            <ArtistSection
+                artistId={artistId}
+                artists={artists}
+                handleArtistButtonClick={handleArtistButtonClick}
+            />
+            <OtherInfoSection
+                instrument={instrument}
+                strings={strings}
+                handleInstrumentButtonClick={handleInstrumentButtonClick}
+                handleStringsButtonClick={handleStringsButtonClick}
+            />
             <ul className="list bg-base-100 rounded-box shadow-md">
                 <li className="text-sm p-4 pb-2 opacity-60 tracking-wide">{result}</li>
                 {filteredTablatures.map((tablature) => (
