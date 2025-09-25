@@ -5,12 +5,14 @@ export type Artist = {
     name: string;
 };
 
-export async function findArtists() {
-    return await cmsClient.getAllContents<Artist>({
-        endpoint: "artists",
-        queries: {
-            fields: "id,name",
-            orders: "name",
-        },
-    });
+export class ArtistClient {
+    static async findArtists() {
+        return await cmsClient.getAllContents<Artist>({
+            endpoint: "artists",
+            queries: {
+                fields: "id,name",
+                orders: "name",
+            },
+        });
+    }
 }

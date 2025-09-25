@@ -1,7 +1,10 @@
 "use client";
 
+import { createTablature } from "@/actions/tablature";
 import type { Artist } from "@/clients/cms/artist";
-import type { Instrument } from "@/clients/cms/tablature";
+import { type Instrument } from "@/clients/cms/tablature";
+import { createTablatureSchema } from "@/schemas/tablature";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ArtistSection } from "./artist-section";
 import { OtherInfoSection } from "./other-info-section";
@@ -11,11 +14,14 @@ type Props = {
 };
 
 export function TablatureForm({ artists }: Props) {
+    const router = useRouter();
+
     const [artistId, setArtistId] = useState<string | undefined>(undefined);
     const [instrument, setInstrument] = useState<Instrument | null>(null);
     const [strings, setStrings] = useState<number | null>(null);
     const [title, setTitle] = useState<string>("");
     const [url, setUrl] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleArtistButtonClick = (_artistId: string) => {
         setArtistId((currentArtistId) => (currentArtistId === _artistId ? undefined : _artistId));
@@ -41,6 +47,36 @@ export function TablatureForm({ artists }: Props) {
         setUrl(() => value);
     };
 
+    const handleSubmit = async () => {
+        const submission = createTablatureSchema.safeParse({
+            artistId,
+            instrument,
+            strings,
+            title,
+            url,
+        });
+        if (!submission.success) {
+            setErrorMessage(submission.error.issues[0].message);
+            return;
+        }
+
+        setErrorMessage(null);
+
+        const formData = new FormData();
+        formData.append("artistId", submission.data.artistId);
+        formData.append("instrument", submission.data.instrument);
+        formData.append("strings", submission.data.strings.toString());
+        formData.append("title", submission.data.title);
+        formData.append("url", submission.data.url);
+
+        const { success, message } = await createTablature(formData);
+        alert(message);
+
+        if (success) {
+            router.back();
+        }
+    };
+
     return (
         <div className="flex flex-col space-y-3">
             <ArtistSection
@@ -57,15 +93,28 @@ export function TablatureForm({ artists }: Props) {
             <div className="flex flex-col space-y-4 shadow-md p-4">
                 <fieldset className="fieldset">
                     <legend className="fieldset-legend">楽曲名</legend>
-                    <input type="text" className="input w-full" onChange={handleTitleChange} />
+                    <input
+                        type="text"
+                        className="input w-full"
+                        value={title}
+                        onChange={handleTitleChange}
+                    />
                 </fieldset>
                 <fieldset className="fieldset">
                     <legend className="fieldset-legend">配信元サイトURL</legend>
-                    <input type="text" className="input w-full" onChange={handleUrlChange} />
+                    <input
+                        type="text"
+                        className="input w-full"
+                        value={url}
+                        onChange={handleUrlChange}
+                    />
                 </fieldset>
             </div>
-            <div className="flex justify-end">
-                <button className="btn rounded-md btn-secondary">TAB譜を投稿</button>
+            <div className="flex">
+                <span className="font-bold text-error flex-1">{errorMessage}</span>
+                <button className="btn rounded-md btn-secondary flex-none" onClick={handleSubmit}>
+                    TAB譜を投稿
+                </button>
             </div>
         </div>
     );

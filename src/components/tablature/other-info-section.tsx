@@ -1,4 +1,5 @@
-import { Instrument } from "@/clients/cms/tablature";
+import type { Instrument } from "@/clients/cms/tablature";
+import { INSTRUMENTS } from "@/schemas/tablature";
 import { getButtonClass } from "./util";
 
 type Props = {
@@ -19,13 +20,7 @@ export function OtherInfoSection({
             <div>
                 <h3 className="mb-2 font-bold">楽器</h3>
                 <div className="flex space-x-2">
-                    {[
-                        "エレキギター",
-                        "アコースティックギター",
-                        "エレキベース",
-                        "アコースティックベース",
-                        "ウクレレ",
-                    ].map((_instrument, index) => (
+                    {INSTRUMENTS.map((_instrument, index) => (
                         <button
                             key={`${_instrument}-${index}`}
                             className={getButtonClass(_instrument === instrument)}

@@ -1,8 +1,8 @@
-import { findArtists } from "@/clients/cms/artist";
+import { ArtistClient } from "@/clients/cms/artist";
 import { TablatureForm } from "@/components/tablature/tablature-form";
 
 export default async function TablatureNewPage() {
-    const artists = await findArtists();
+    const artists = await ArtistClient.findArtists();
 
     return (
         <div className="container mx-auto">

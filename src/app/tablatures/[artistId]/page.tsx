@@ -1,5 +1,5 @@
-import { findArtists } from "@/clients/cms/artist";
-import { findTablatures } from "@/clients/cms/tablature";
+import { ArtistClient } from "@/clients/cms/artist";
+import { TablatureClient } from "@/clients/cms/tablature";
 import { TablatureSearch } from "@/components/tablature/tablature-search";
 
 type Props = {
@@ -8,8 +8,8 @@ type Props = {
 
 export default async function TablatureSearchPage({ params }: Props) {
     const { artistId } = await params;
-    const artists = await findArtists();
-    const tablatures = await findTablatures(artistId);
+    const artists = await ArtistClient.findArtists();
+    const tablatures = await TablatureClient.findTablatures(artistId);
 
     return (
         <div className="container mx-auto">
