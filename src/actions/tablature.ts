@@ -1,6 +1,7 @@
 "use server";
 
 import { TablatureClient } from "@/clients/cms/tablature";
+import { COMMON_ERROR_MESSAGE } from "@/contants/tablature";
 import { createTablatureSchema } from "@/schemas/tablature";
 
 export async function createTablature(formData: FormData) {
@@ -15,7 +16,7 @@ export async function createTablature(formData: FormData) {
         console.log(error);
         return {
             success: false,
-            message: "TAB譜の投稿に失敗しました。しばらくしてから再度お試しください。",
+            message: COMMON_ERROR_MESSAGE,
         };
     }
 

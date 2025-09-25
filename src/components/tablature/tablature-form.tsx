@@ -1,8 +1,10 @@
 "use client";
 
+import { createArtist } from "@/actions/artist";
 import { createTablature } from "@/actions/tablature";
 import type { Artist } from "@/clients/cms/artist";
 import { type Instrument } from "@/clients/cms/tablature";
+import { COMMON_ERROR_MESSAGE } from "@/contants/tablature";
 import { createTablatureSchema } from "@/schemas/tablature";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -21,10 +23,12 @@ export function TablatureForm({ artists }: Props) {
     const [strings, setStrings] = useState<number | null>(null);
     const [title, setTitle] = useState<string>("");
     const [url, setUrl] = useState<string>("");
+    const [artistName, setArtistName] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleArtistButtonClick = (_artistId: string) => {
         setArtistId((currentArtistId) => (currentArtistId === _artistId ? undefined : _artistId));
+        setArtistName(() => "");
     };
 
     const handleInstrumentButtonClick = (_instrument: Instrument) => {
@@ -47,14 +51,36 @@ export function TablatureForm({ artists }: Props) {
         setUrl(() => value);
     };
 
+    const handleArtistNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setArtistName(() => value);
+        setArtistId(undefined);
+    };
+
     const handleSubmit = async () => {
-        const submission = createTablatureSchema.safeParse({
+        const data = {
             artistId,
             instrument,
             strings,
             title,
             url,
-        });
+        };
+
+        if (!artistId && artistName.length > 0) {
+            const createArtistFormData = new FormData();
+            createArtistFormData.append("name", artistName);
+            const createArtistResults = await createArtist(createArtistFormData);
+            if (!createArtistResults.success) {
+                setErrorMessage(COMMON_ERROR_MESSAGE);
+                return;
+            }
+
+            if (createArtistResults.artistId) {
+                data.artistId = createArtistResults.artistId;
+            }
+        }
+
+        const submission = createTablatureSchema.safeParse(data);
         if (!submission.success) {
             setErrorMessage(submission.error.issues[0].message);
             return;
@@ -73,7 +99,7 @@ export function TablatureForm({ artists }: Props) {
         alert(message);
 
         if (success) {
-            router.back();
+            router.push("/");
         }
     };
 
@@ -84,6 +110,19 @@ export function TablatureForm({ artists }: Props) {
                 artists={artists}
                 handleArtistButtonClick={handleArtistButtonClick}
             />
+            <div className="flex flex-col space-y-4 shadow-md p-4">
+                <fieldset className="fieldset">
+                    <legend className="fieldset-legend">
+                        アーティストが選択肢に存在しない場合はこちらから入力
+                    </legend>
+                    <input
+                        type="text"
+                        className="input w-full"
+                        value={artistName}
+                        onChange={handleArtistNameChange}
+                    />
+                </fieldset>
+            </div>
             <OtherInfoSection
                 instrument={instrument}
                 strings={strings}
