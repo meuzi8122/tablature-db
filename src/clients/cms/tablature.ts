@@ -3,7 +3,12 @@ import { z } from "zod";
 import type { Artist } from "./artist";
 import { cmsClient } from "./cms-client";
 
-export type Instrument = "エレキギター" | "アコースティックギター" | "エレキベース";
+export type Instrument =
+    | "エレキギター"
+    | "アコースティックギター"
+    | "エレキベース"
+    | "アコースティックベース"
+    | "ウクレレ";
 
 export type Tablature = {
     id: string;
