@@ -24,6 +24,7 @@ export class TablatureClient {
     private static endpoint = "tablatures";
 
     static async findTablatures(artistId: string) {
+        "use cache";
         return (
             await cmsClient.getAllContents<Tablature>({
                 endpoint: this.endpoint,
