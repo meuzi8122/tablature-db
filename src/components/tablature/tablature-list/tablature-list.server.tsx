@@ -1,5 +1,3 @@
-"use server";
-
 import { TablatureClient } from "@/clients/cms/tablature";
 import { ClientTablatureList } from "./tablature-list.client";
 

@@ -1,5 +1,3 @@
-"use server";
-
 import { ArtistClient } from "@/clients/cms/artist";
 import { getButtonClass } from "@/components/tablature/util";
 import Link from "next/link";
