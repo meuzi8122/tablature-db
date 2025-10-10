@@ -1,25 +1,23 @@
 "use client";
 
-import type { Artist } from "@/clients/cms/artist";
-import type { Instrument, Tablature } from "@/clients/cms/tablature";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { ArtistSection } from "./artist-section";
+import { Instrument } from "@/clients/cms/tablature";
+import { createContext, Suspense, useState } from "react";
 import { OtherInfoSection } from "./other-info-section";
 
 type Props = {
-    artistId?: string;
-    artists: Artist[];
-    tablatures: Tablature[];
+    ArtistSection: React.ReactNode;
+    TablatureList: React.ReactNode;
 };
 
-export function TablatureSearch({ artistId, artists, tablatures }: Props) {
-    const router = useRouter();
+export const TablatureSearchContext = createContext<{
+    instrument: Instrument | null;
+    strings: number | null;
+}>({
+    instrument: null,
+    strings: null,
+});
 
-    const handleArtistButtonClick = (_artistId: string) => {
-        router.push(`/tablatures/${_artistId}`);
-    };
-
+export function TablatureSearch({ ArtistSection, TablatureList }: Props) {
     const [instrument, setInstrument] = useState<Instrument | null>(null);
     const [strings, setStrings] = useState<number | null>(null);
 
@@ -33,62 +31,41 @@ export function TablatureSearch({ artistId, artists, tablatures }: Props) {
         setStrings((currentStrings) => (currentStrings === _strings ? null : _strings));
     };
 
-    const filteredTablatures = tablatures.filter((tablature) => {
-        if (instrument && tablature.instrument !== instrument) {
-            return false;
-        }
-
-        if (strings && tablature.strings !== strings) {
-            return false;
-        }
-
-        return true;
-    });
-
-    const result = (() => {
-        if (artistId == null) {
-            if (filteredTablatures.length === 0) return "条件に一致するTAB譜が見つかりませんでした";
-            return "最近追加されたTAB譜";
-        }
-
-        if (filteredTablatures.length === 0) return "条件に一致するTAB譜が見つかりませんでした";
-        return `${filteredTablatures.length}件のTAB譜が見つかりました`;
-    })();
-
     return (
         <div className="flex flex-col space-y-3">
-            <ArtistSection
-                artistId={artistId}
-                artists={artists}
-                handleArtistButtonClick={handleArtistButtonClick}
-            />
+            <Suspense
+                fallback={
+                    <div className="shadow-md p-4">
+                        <h3 className="mb-2 font-bold">アーティスト</h3>
+                        <div className="max-h-30">
+                            <span className="text-sm pb-2 opacity-60 tracking-wide">
+                                アーティストを取得中..
+                            </span>
+                        </div>
+                    </div>
+                }
+            >
+                {ArtistSection}
+            </Suspense>
             <OtherInfoSection
                 instrument={instrument}
                 strings={strings}
                 handleInstrumentButtonClick={handleInstrumentButtonClick}
                 handleStringsButtonClick={handleStringsButtonClick}
             />
-            <ul className="list bg-base-100 rounded-box shadow-md">
-                <li className="text-sm p-4 pb-2 opacity-60 tracking-wide">{result}</li>
-                {filteredTablatures.map((tablature) => (
-                    <li className="list-row" key={tablature.id}>
-                        <div>
-                            <div className="text-lg">
-                                <a
-                                    href={tablature.url}
-                                    className="link link-primary no-underline"
-                                    target="_blank"
-                                >
-                                    {tablature.title}
-                                </a>
-                            </div>
-                            <div className="text-sm uppercase font-semibold opacity-60">
-                                {tablature.owner ?? "配信元サイト不明"}
-                            </div>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+            <TablatureSearchContext.Provider value={{ instrument, strings }}>
+                <Suspense
+                    fallback={
+                        <ul className="list bg-base-100 rounded-box shadow-md">
+                            <li className="text-sm p-4 pb-2 opacity-60 tracking-wide">
+                                TAB譜を取得中..
+                            </li>
+                        </ul>
+                    }
+                >
+                    {TablatureList}
+                </Suspense>
+            </TablatureSearchContext.Provider>
         </div>
     );
 }

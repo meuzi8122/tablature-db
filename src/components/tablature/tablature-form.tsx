@@ -2,20 +2,18 @@
 
 import { createArtist } from "@/actions/artist";
 import { createTablature } from "@/actions/tablature";
-import type { Artist } from "@/clients/cms/artist";
 import { type Instrument } from "@/clients/cms/tablature";
 import { COMMON_ERROR_MESSAGE } from "@/contants/tablature";
 import { createTablatureSchema } from "@/schemas/tablature";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ArtistSection } from "./artist-section";
 import { OtherInfoSection } from "./other-info-section";
 
 type Props = {
-    artists: Artist[];
+    ArtistSection: React.ReactNode;
 };
 
-export function TablatureForm({ artists }: Props) {
+export function TablatureForm({ ArtistSection }: Props) {
     const router = useRouter();
 
     const [artistId, setArtistId] = useState<string | undefined>(undefined);
@@ -105,11 +103,7 @@ export function TablatureForm({ artists }: Props) {
 
     return (
         <div className="flex flex-col space-y-3">
-            <ArtistSection
-                artistId={artistId}
-                artists={artists}
-                handleArtistButtonClick={handleArtistButtonClick}
-            />
+            {ArtistSection}
             <div className="flex flex-col space-y-4 shadow-md p-4">
                 <fieldset className="fieldset">
                     <legend className="fieldset-legend">

@@ -1,25 +1,28 @@
-import { Artist } from "@/clients/cms/artist";
-import { getButtonClass } from "./util";
+"use server";
+
+import { ArtistClient } from "@/clients/cms/artist";
+import { getButtonClass } from "@/components/tablature/util";
+import Link from "next/link";
 
 type Props = {
     artistId: string | undefined;
-    artists: Artist[];
-    handleArtistButtonClick: (artistId: string) => void;
 };
 
-export function ArtistSection({ artistId, artists, handleArtistButtonClick }: Props) {
+export async function ArtistSection({ artistId }: Props) {
+    const artists = await ArtistClient.findArtists();
+
     return (
         <div className="shadow-md p-4">
             <h3 className="mb-2 font-bold">アーティスト</h3>
-            <div className="flex space-x-2 flex-wrap space-y-2 overflow-y-scroll max-h-30">
-                {artists.map((_artist) => (
-                    <button
-                        key={_artist.id}
-                        className={getButtonClass(_artist.id === artistId)}
-                        onClick={() => handleArtistButtonClick(_artist.id)}
+            <div className="flex space-x-2 flex-wrap gap-2 overflow-y-scroll max-h-30">
+                {artists.map((artist) => (
+                    <Link
+                        key={artist.id}
+                        href={`/tablatures/${artist.id}`}
+                        className={getButtonClass(artist.id === artistId)}
                     >
-                        {_artist.name}
-                    </button>
+                        {artist.name}
+                    </Link>
                 ))}
             </div>
         </div>
