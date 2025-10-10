@@ -9,25 +9,15 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { OtherInfoSection } from "./other-info-section";
 
-type Props = {
-    ArtistSection: React.ReactNode;
-};
-
-export function TablatureForm({ ArtistSection }: Props) {
+export function TablatureForm() {
     const router = useRouter();
 
-    const [artistId, setArtistId] = useState<string | undefined>(undefined);
     const [instrument, setInstrument] = useState<Instrument | null>(null);
     const [strings, setStrings] = useState<number | null>(null);
     const [title, setTitle] = useState<string>("");
     const [url, setUrl] = useState<string>("");
     const [artistName, setArtistName] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-    const handleArtistButtonClick = (_artistId: string) => {
-        setArtistId((currentArtistId) => (currentArtistId === _artistId ? undefined : _artistId));
-        setArtistName(() => "");
-    };
 
     const handleInstrumentButtonClick = (_instrument: Instrument) => {
         setInstrument((currentInstrument) =>
@@ -52,33 +42,30 @@ export function TablatureForm({ ArtistSection }: Props) {
     const handleArtistNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setArtistName(() => value);
-        setArtistId(undefined);
     };
 
     const handleSubmit = async () => {
         const data = {
-            artistId,
             instrument,
             strings,
             title,
             url,
         };
 
-        if (!artistId && artistName.length > 0) {
-            const createArtistFormData = new FormData();
-            createArtistFormData.append("name", artistName);
-            const createArtistResults = await createArtist(createArtistFormData);
-            if (!createArtistResults.success) {
-                setErrorMessage(COMMON_ERROR_MESSAGE);
-                return;
-            }
+        // アーティストを登録
+        const createArtistFormData = new FormData();
+        createArtistFormData.append("name", artistName);
 
-            if (createArtistResults.artistId) {
-                data.artistId = createArtistResults.artistId;
-            }
+        const createArtistResults = await createArtist(createArtistFormData);
+        if (!createArtistResults.success || !createArtistResults.artistId) {
+            setErrorMessage(COMMON_ERROR_MESSAGE);
+            return;
         }
 
-        const submission = createTablatureSchema.safeParse(data);
+        const submission = createTablatureSchema.safeParse({
+            ...data,
+            artistId: createArtistResults.artistId,
+        });
         if (!submission.success) {
             setErrorMessage(submission.error.issues[0].message);
             return;
@@ -87,7 +74,7 @@ export function TablatureForm({ ArtistSection }: Props) {
         setErrorMessage(null);
 
         const formData = new FormData();
-        formData.append("artistId", submission.data.artistId);
+        formData.append("artistId", createArtistResults.artistId);
         formData.append("instrument", submission.data.instrument);
         formData.append("strings", submission.data.strings.toString());
         formData.append("title", submission.data.title);
@@ -103,12 +90,15 @@ export function TablatureForm({ ArtistSection }: Props) {
 
     return (
         <div className="flex flex-col space-y-3">
-            {ArtistSection}
+            <OtherInfoSection
+                instrument={instrument}
+                strings={strings}
+                handleInstrumentButtonClick={handleInstrumentButtonClick}
+                handleStringsButtonClick={handleStringsButtonClick}
+            />
             <div className="flex flex-col space-y-4 shadow-md p-4">
                 <fieldset className="fieldset">
-                    <legend className="fieldset-legend">
-                        アーティストが選択肢に存在しない場合はこちらから入力
-                    </legend>
+                    <legend className="fieldset-legend">アーティスト名</legend>
                     <input
                         type="text"
                         className="input w-full"
@@ -117,12 +107,6 @@ export function TablatureForm({ ArtistSection }: Props) {
                     />
                 </fieldset>
             </div>
-            <OtherInfoSection
-                instrument={instrument}
-                strings={strings}
-                handleInstrumentButtonClick={handleInstrumentButtonClick}
-                handleStringsButtonClick={handleStringsButtonClick}
-            />
             <div className="flex flex-col space-y-4 shadow-md p-4">
                 <fieldset className="fieldset">
                     <legend className="fieldset-legend">楽曲名</legend>

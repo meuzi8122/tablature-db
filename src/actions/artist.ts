@@ -15,6 +15,7 @@ export async function createArtist(formData: FormData) {
 
     try {
         const artist = await ArtistClient.createArtist(submission.data.name);
+        // 既にアーティストが存在する場合はそのIDを返す
         return { success: true, artistId: artist.id };
     } catch (error) {
         return {
