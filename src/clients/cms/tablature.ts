@@ -22,7 +22,6 @@ export type Tablature = {
 
 export class TablatureClient {
     static async findTablatures(artistId: string) {
-        "use cache";
         return (
             await cmsClient.getAllContents<Tablature>({
                 // Partial Prerenderingを有効にしたらクラス変数が参照できなくなったのでendpoint直書き
@@ -34,13 +33,12 @@ export class TablatureClient {
             })
         ).map((tablature) => ({
             ...tablature,
-            createdAt: new Date(tablature.createdAt).toLocaleDateString(),
+            createdAt: new Date(tablature.createdAt).toLocaleDateString("ja-JP"),
             instrument: tablature.instrument[0] as Instrument,
         }));
     }
 
     static async findLatestTablatures() {
-        "use cache";
         return (
             await cmsClient.getList<Tablature & { artist: Artist }>({
                 endpoint: "tablatures",
@@ -53,7 +51,7 @@ export class TablatureClient {
         ).contents.map((content) => ({
             ...content,
             title: `${content.title} - ${content.artist.name}`,
-            createdAt: new Date(content.createdAt).toLocaleDateString(),
+            createdAt: new Date(content.createdAt).toLocaleDateString("ja-JP"),
             instrument: content.instrument[0] as Instrument,
         }));
     }
