@@ -7,7 +7,7 @@ type Props = {
     artistId?: string;
 };
 
-export async function TablatureList({ artistId }: Props) {
+export async function ServerTablatureList({ artistId }: Props) {
     const tablatures = artistId
         ? await TablatureClient.findTablatures(artistId)
         : await TablatureClient.findLatestTablatures();

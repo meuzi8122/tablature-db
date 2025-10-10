@@ -1,5 +1,5 @@
 import { ArtistSection } from "@/components/tablature/artist-section";
-import { TablatureList } from "@/components/tablature/tablature-list";
+import { ServerTablatureList } from "@/components/tablature/tablature-list/tablature-list.server";
 import { TablatureSearch } from "@/components/tablature/tablature-search";
 
 type Props = {
@@ -13,7 +13,7 @@ export default async function TablatureSearchPage({ params }: Props) {
         <div className="container mx-auto mb-2">
             <TablatureSearch
                 ArtistSection={<ArtistSection artistId={artistId} />}
-                TablatureList={<TablatureList artistId={artistId} />}
+                TablatureList={<ServerTablatureList artistId={artistId} />}
             />
         </div>
     );

@@ -1,5 +1,5 @@
 import { ArtistSection } from "@/components/tablature/artist-section";
-import { TablatureList } from "@/components/tablature/tablature-list";
+import { ServerTablatureList } from "@/components/tablature/tablature-list/tablature-list.server";
 import { TablatureSearch } from "@/components/tablature/tablature-search";
 
 export default async function IndexPage() {
@@ -7,7 +7,7 @@ export default async function IndexPage() {
         <div className="container mx-auto mb-2">
             <TablatureSearch
                 ArtistSection={<ArtistSection artistId={undefined} />}
-                TablatureList={<TablatureList artistId={undefined} />}
+                TablatureList={<ServerTablatureList artistId={undefined} />}
             />
         </div>
     );

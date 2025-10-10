@@ -9,7 +9,7 @@ type Props = {
     tablatures: Tablature[];
 };
 
-export async function ClientTablatureList({ artistId, tablatures }: Props) {
+export function ClientTablatureList({ artistId, tablatures }: Props) {
     const { instrument, strings } = useContext(TablatureSearchContext);
 
     const filteredTablatures = tablatures.filter((tablature) => {
@@ -37,7 +37,7 @@ export async function ClientTablatureList({ artistId, tablatures }: Props) {
     return (
         <ul className="list bg-base-100 rounded-box shadow-md">
             <li className="text-sm p-4 pb-2 opacity-60 tracking-wide">{result}</li>
-            {tablatures.map((tablature) => (
+            {filteredTablatures.map((tablature) => (
                 <li className="list-row" key={tablature.id}>
                     <div>
                         <div className="text-lg">
