@@ -21,13 +21,12 @@ export type Tablature = {
 };
 
 export class TablatureClient {
-    private static endpoint = "tablatures";
-
     static async findTablatures(artistId: string) {
         "use cache";
         return (
             await cmsClient.getAllContents<Tablature>({
-                endpoint: this.endpoint,
+                // Partial Prerenderingを有効にしたらクラス変数が参照できなくなったのでendpoint直書き
+                endpoint: "tablatures",
                 queries: {
                     fields: "id,title,instrument,url,strings,owner,createdAt",
                     filters: `artist[equals]${artistId}`,
@@ -61,7 +60,7 @@ export class TablatureClient {
 
     static async createTablature(tablature: z.infer<typeof createTablatureSchema>) {
         await cmsClient.create({
-            endpoint: this.endpoint,
+            endpoint: "tablatures",
             content: {
                 title: tablature.title,
                 url: tablature.url,
