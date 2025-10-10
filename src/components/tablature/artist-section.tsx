@@ -12,7 +12,7 @@ export async function ArtistSection({ artistId }: Props) {
     return (
         <div className="shadow-md p-4">
             <h3 className="mb-2 font-bold">アーティスト</h3>
-            <div className="flex space-x-1 space-y-1 flex-wrap overflow-y-scroll max-h-30">
+            <div className="flex space-x-1.5 space-y-1.5 flex-wrap overflow-y-scroll max-h-30">
                 {artists.map((artist) => (
                     <Link
                         key={artist.id}
