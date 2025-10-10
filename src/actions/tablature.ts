@@ -1,7 +1,7 @@
 "use server";
 
 import { TablatureClient } from "@/clients/cms/tablature";
-import { COMMON_ERROR_MESSAGE } from "@/contants/tablature";
+import { COMMON_ERROR_MESSAGE } from "@/constants/tablature";
 import { createTablatureSchema } from "@/schemas/tablature";
 
 export async function createTablature(formData: FormData) {

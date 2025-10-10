@@ -3,7 +3,7 @@
 import { createArtist } from "@/actions/artist";
 import { createTablature } from "@/actions/tablature";
 import { type Instrument } from "@/clients/cms/tablature";
-import { COMMON_ERROR_MESSAGE } from "@/contants/tablature";
+import { COMMON_ERROR_MESSAGE } from "@/constants/tablature";
 import { createTablatureSchema } from "@/schemas/tablature";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
