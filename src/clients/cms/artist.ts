@@ -7,6 +7,7 @@ export type Artist = {
 
 export class ArtistClient {
     static async findArtists() {
+        "use cache";
         return await cmsClient.getAllContents<Artist>({
             endpoint: "artists",
             queries: {

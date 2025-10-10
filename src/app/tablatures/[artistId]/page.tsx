@@ -7,6 +7,7 @@ type Props = {
 };
 
 export default async function TablatureSearchPage({ params }: Props) {
+    "use cache";
     const { artistId } = await params;
 
     return (

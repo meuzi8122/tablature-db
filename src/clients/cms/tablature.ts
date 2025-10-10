@@ -34,14 +34,16 @@ export class TablatureClient {
             })
         ).map((tablature) => ({
             ...tablature,
+            createdAt: new Date(tablature.createdAt).toLocaleDateString(),
             instrument: tablature.instrument[0] as Instrument,
         }));
     }
 
     static async findLatestTablatures() {
+        "use cache";
         return (
             await cmsClient.getList<Tablature & { artist: Artist }>({
-                endpoint: this.endpoint,
+                endpoint: "tablatures",
                 queries: {
                     fields: "id,title,instrument,artist.id,artist.name,url,strings,owner,createdAt",
                     orders: "-publishedAt",
@@ -51,6 +53,7 @@ export class TablatureClient {
         ).contents.map((content) => ({
             ...content,
             title: `${content.title} - ${content.artist.name}`,
+            createdAt: new Date(content.createdAt).toLocaleDateString(),
             instrument: content.instrument[0] as Instrument,
         }));
     }
