@@ -17,6 +17,7 @@ export type Tablature = {
     url: string;
     strings: number;
     owner: string | null | undefined;
+    createdAt: string;
 };
 
 export class TablatureClient {
@@ -27,7 +28,7 @@ export class TablatureClient {
             await cmsClient.getAllContents<Tablature>({
                 endpoint: this.endpoint,
                 queries: {
-                    fields: "id,title,instrument,url,strings,owner",
+                    fields: "id,title,instrument,url,strings,owner,createdAt",
                     filters: `artist[equals]${artistId}`,
                 },
             })
@@ -42,7 +43,7 @@ export class TablatureClient {
             await cmsClient.getList<Tablature & { artist: Artist }>({
                 endpoint: this.endpoint,
                 queries: {
-                    fields: "id,title,instrument,artist.id,artist.name,url,strings,owner",
+                    fields: "id,title,instrument,artist.id,artist.name,url,strings,owner,createdAt",
                     orders: "-publishedAt",
                     limit: 10,
                 },

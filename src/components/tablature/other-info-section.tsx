@@ -19,7 +19,7 @@ export function OtherInfoSection({
         <div className="flex flex-col space-y-4 shadow-md p-4">
             <div>
                 <h3 className="mb-2 font-bold">楽器</h3>
-                <div className="flex space-x-2">
+                <div className="flex space-x-1">
                     {INSTRUMENTS.map((_instrument, index) => (
                         <button
                             key={`${_instrument}-${index}`}
@@ -33,7 +33,7 @@ export function OtherInfoSection({
             </div>
             <div>
                 <h3 className="mb-2 font-bold">弦数</h3>
-                <div className="flex space-x-2">
+                <div className="flex space-x-1">
                     {[4, 5, 6, 7].map((_strings) => (
                         <button
                             key={`strings-${_strings}`}
