@@ -1,9 +1,9 @@
 "use client";
 
-import { useBookmarks } from "@/app/hooks/bookmark";
 import { Tablature } from "@/clients/cms/tablature";
 import { BookmarkIcon } from "@/components/icon/bookmark-icon";
 import { NoBookmarkIcon } from "@/components/icon/no-bookmark-icon";
+import { useBookmarks } from "@/hooks/bookmark";
 import { useContext, useMemo } from "react";
 import { TablatureSearchContext } from "../tablature-search";
 
