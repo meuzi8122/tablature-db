@@ -1,4 +1,4 @@
-import { db } from "@/clients/internal-db/db";
+import { db } from "@/internal-db";
 import { useLiveQuery } from "dexie-react-hooks";
 
 export const useBookmarks = () => {
