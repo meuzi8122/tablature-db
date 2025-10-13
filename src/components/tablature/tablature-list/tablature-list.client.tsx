@@ -50,7 +50,8 @@ export function ClientTablatureList({ artistId, tablatures }: Props) {
                             </a>
                         </div>
                         <div className="text-sm uppercase font-semibold opacity-60">
-                            {tablature.owner ?? "配信元サイト不明"}・{tablature.createdAt}
+                            {tablature.owner ?? "配信元サイト不明"}・
+                            {new Date(tablature.createdAt).toLocaleDateString()}
                         </div>
                     </div>
                 </li>

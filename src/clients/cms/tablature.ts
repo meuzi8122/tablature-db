@@ -21,11 +21,12 @@ export type Tablature = {
 };
 
 export class TablatureClient {
+    private static endpoint = "tablatures";
+
     static async findTablatures(artistId: string) {
         return (
             await cmsClient.getAllContents<Tablature>({
-                // Partial Prerenderingを有効にしたらクラス変数が参照できなくなったのでendpoint直書き
-                endpoint: "tablatures",
+                endpoint: this.endpoint,
                 queries: {
                     fields: "id,title,instrument,url,strings,owner,createdAt",
                     filters: `artist[equals]${artistId}`,
@@ -33,7 +34,6 @@ export class TablatureClient {
             })
         ).map((tablature) => ({
             ...tablature,
-            createdAt: new Date(tablature.createdAt).toLocaleDateString("ja-JP"),
             instrument: tablature.instrument[0] as Instrument,
         }));
     }
@@ -41,7 +41,7 @@ export class TablatureClient {
     static async findLatestTablatures() {
         return (
             await cmsClient.getList<Tablature & { artist: Artist }>({
-                endpoint: "tablatures",
+                endpoint: this.endpoint,
                 queries: {
                     fields: "id,title,instrument,artist.id,artist.name,url,strings,owner,createdAt",
                     orders: "-publishedAt",
@@ -51,14 +51,13 @@ export class TablatureClient {
         ).contents.map((content) => ({
             ...content,
             title: `${content.title} - ${content.artist.name}`,
-            createdAt: new Date(content.createdAt).toLocaleDateString("ja-JP"),
             instrument: content.instrument[0] as Instrument,
         }));
     }
 
     static async createTablature(tablature: z.infer<typeof createTablatureSchema>) {
         await cmsClient.create({
-            endpoint: "tablatures",
+            endpoint: this.endpoint,
             content: {
                 title: tablature.title,
                 url: tablature.url,
