@@ -129,7 +129,7 @@ export function TablatureForm() {
             </div>
             <div className="flex">
                 <span className="font-bold text-error flex-1">{errorMessage}</span>
-                <button className="btn rounded-md btn-secondary flex-none" onClick={handleSubmit}>
+                <button className="btn rounded-md btn-primary flex-none" onClick={handleSubmit}>
                     TAB譜を投稿
                 </button>
             </div>
