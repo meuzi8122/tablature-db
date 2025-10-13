@@ -19,6 +19,11 @@ export function ClientBookmarkedTablatureList() {
     const [tablatures, setTablatures] = useState<Tablature[]>([]);
 
     const findTablatures = async (_bookmarkIds: string[]) => {
+        if (_bookmarkIds.length === 0) {
+            setTablatures([]);
+            return;
+        }
+
         const res = await fetch("/api/bookmarks", {
             method: "POST",
             headers: {
@@ -56,7 +61,7 @@ export function ClientBookmarkedTablatureList() {
     })();
 
     return (
-        <div>
+        <div className="flex flex-col gap-2 mt-2">
             <h4>ブックマークしたTAB譜</h4>
             <ul className="list bg-base-100 rounded-box shadow-md">
                 <li className="text-sm p-4 pb-2 opacity-60 tracking-wide">{result}</li>
