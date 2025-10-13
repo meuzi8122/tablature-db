@@ -4,7 +4,7 @@ import { TablatureSearch } from "@/components/tablature/tablature-search";
 
 export default async function IndexPage() {
     return (
-        <div className="container mx-auto mb-2 px-5 md:px-0">
+        <div className="container mx-auto mb-2 px-6 md:px-0">
             <TablatureSearch
                 ArtistSection={<ArtistSection artistId={undefined} />}
                 TablatureList={<ServerTablatureList artistId={undefined} />}

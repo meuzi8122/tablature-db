@@ -4,7 +4,7 @@ export function Navbar() {
     return (
         <div className="navbar bg-primary shadow-sm mb-6">
             <div className="flex-1">
-                <Link href="/" className="btn btn-ghost text-xl text-white font-bold">
+                <Link href="/" className="btn btn-primary text-xl font-bold">
                     TablatureDB
                 </Link>
             </div>

@@ -89,7 +89,7 @@ export function TablatureForm() {
     };
 
     return (
-        <div className="flex flex-col space-y-3">
+        <div className="flex flex-col space-y-4">
             <OtherInfoSection
                 instrument={instrument}
                 strings={strings}

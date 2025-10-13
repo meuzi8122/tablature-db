@@ -16,8 +16,7 @@ export type Tablature = {
     instrument: Instrument;
     url: string;
     strings: number;
-    owner: string | null | undefined;
-    createdAt: string;
+    artist: Artist;
 };
 
 export class TablatureClient {
@@ -28,7 +27,7 @@ export class TablatureClient {
             await cmsClient.getAllContents<Tablature>({
                 endpoint: this.endpoint,
                 queries: {
-                    fields: "id,title,instrument,url,strings,owner,createdAt",
+                    fields: "id,title,instrument,,artist.id,artist.name,url,strings",
                     filters: `artist[equals]${artistId}`,
                 },
             })
@@ -40,17 +39,16 @@ export class TablatureClient {
 
     static async findLatestTablatures() {
         return (
-            await cmsClient.getList<Tablature & { artist: Artist }>({
+            await cmsClient.getList<Tablature>({
                 endpoint: this.endpoint,
                 queries: {
-                    fields: "id,title,instrument,artist.id,artist.name,url,strings,owner,createdAt",
+                    fields: "id,title,instrument,artist.id,artist.name,url,strings",
                     orders: "-publishedAt",
                     limit: 10,
                 },
             })
         ).contents.map((content) => ({
             ...content,
-            title: `${content.title} - ${content.artist.name}`,
             instrument: content.instrument[0] as Instrument,
         }));
     }
@@ -64,7 +62,6 @@ export class TablatureClient {
                 artist: tablature.artistId,
                 instrument: [tablature.instrument],
                 strings: tablature.strings,
-                owner: tablature.owner ?? "",
             },
         });
     }

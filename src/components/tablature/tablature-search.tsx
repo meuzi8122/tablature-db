@@ -32,7 +32,7 @@ export function TablatureSearch({ ArtistSection, TablatureList }: Props) {
     };
 
     return (
-        <div className="flex flex-col space-y-3">
+        <div className="flex flex-col space-y-4">
             <Suspense
                 fallback={
                     <div className="shadow-md p-4">
