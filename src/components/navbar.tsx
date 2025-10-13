@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MenuIcon } from "./icon/menu-icon";
 
 export function Navbar() {
     return (
@@ -9,22 +10,25 @@ export function Navbar() {
                 </Link>
             </div>
             <div className="flex-none">
-                <Link href="/tablatures/new" className="btn btn-circle btn-primary">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="size-6"
+                <div className="dropdown dropdown-end">
+                    <div tabIndex={0} role="button" className="btn btn-primary">
+                        <MenuIcon />
+                    </div>
+                    <ul
+                        tabIndex={-1}
+                        className="menu dropdown-content bg-base-200 rounded-box z-1 mt-4 w-52 p-2 shadow-sm"
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 4.5v15m7.5-7.5h-15"
-                        />
-                    </svg>
-                </Link>
+                        <li>
+                            <Link href="/">ホーム</Link>
+                        </li>
+                        <li>
+                            <Link href="/tablatures/new">TAB譜を投稿</Link>
+                        </li>
+                        <li>
+                            <Link href="/bookmarks">ブックマークしたTAB譜</Link>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     );

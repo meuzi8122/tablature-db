@@ -2,7 +2,7 @@
 
 import { useBookmarks } from "@/app/hooks/bookmark";
 import { Tablature } from "@/clients/cms/tablature";
-import { BoomarkIcon } from "@/components/icon/bookmark-icon";
+import { BookmarkIcon } from "@/components/icon/bookmark-icon";
 import { NoBookmarkIcon } from "@/components/icon/no-bookmark-icon";
 import { useContext, useMemo } from "react";
 import { TablatureSearchContext } from "../tablature-search";
@@ -81,7 +81,7 @@ export function ClientTablatureList({ artistId, tablatures }: Props) {
                                     addBookmark(tablature.id);
                                 }}
                             >
-                                <BoomarkIcon />
+                                <BookmarkIcon />
                             </button>
                         )}
                     </div>
