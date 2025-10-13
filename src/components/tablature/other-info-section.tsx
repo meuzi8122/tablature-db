@@ -16,7 +16,7 @@ export function OtherInfoSection({
     handleStringsButtonClick,
 }: Props) {
     return (
-        <div className="flex flex-col space-y-4 shadow-md p-4">
+        <div className="flex flex-col space-y-4 shadow-md p-4 overflow-x-scroll">
             <div>
                 <h3 className="mb-2 font-bold">楽器</h3>
                 <div className="flex space-x-1.5">
