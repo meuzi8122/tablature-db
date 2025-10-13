@@ -49,7 +49,7 @@ export function ClientTablatureList({ artistId, tablatures }: Props) {
                                 {tablature.title}
                             </a>
                         </div>
-                        <div className="text-sm uppercase font-semibold opacity-60">
+                        <div className="text-sm font-semibold opacity-60">
                             {`${tablature.artist.name}（${tablature.instrument}・${tablature.strings}弦）`}
                         </div>
                     </div>
