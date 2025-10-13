@@ -53,6 +53,23 @@ export class TablatureClient {
         }));
     }
 
+    static async findTablaturesById(ids: string[]) {
+        return (
+            await cmsClient.getList<Tablature>({
+                endpoint: this.endpoint,
+                queries: {
+                    fields: "id,title,instrument,artist.id,artist.name,url,strings",
+                    orders: "-publishedAt",
+                    filters: ids.map((id) => `id[equals]${id}`).join("[or]"),
+                    limit: 10,
+                },
+            })
+        ).contents.map((content) => ({
+            ...content,
+            instrument: content.instrument[0] as Instrument,
+        }));
+    }
+
     static async createTablature(tablature: z.infer<typeof createTablatureSchema>) {
         await cmsClient.create({
             endpoint: this.endpoint,

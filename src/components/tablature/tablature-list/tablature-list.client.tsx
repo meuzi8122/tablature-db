@@ -1,11 +1,10 @@
 "use client";
 
 import { Tablature } from "@/clients/cms/tablature";
-import { BookmarkIcon } from "@/components/icon/bookmark-icon";
-import { NoBookmarkIcon } from "@/components/icon/no-bookmark-icon";
 import { useBookmarks } from "@/hooks/bookmark";
 import { useContext, useMemo } from "react";
 import { TablatureSearchContext } from "../tablature-search";
+import { TablatureListItem } from "./tablature-list-item";
 
 type Props = {
     artistId?: string;
@@ -48,44 +47,13 @@ export function ClientTablatureList({ artistId, tablatures }: Props) {
         <ul className="list bg-base-100 rounded-box shadow-md">
             <li className="text-sm p-4 pb-2 opacity-60 tracking-wide">{result}</li>
             {filteredTablatures.map((tablature) => (
-                <li className="list-row" key={tablature.id}>
-                    <div>
-                        <div className="text-lg">
-                            <a
-                                href={tablature.url}
-                                className="link link-primary no-underline"
-                                target="_blank"
-                            >
-                                {tablature.title}
-                            </a>
-                        </div>
-                        <div className="text-sm font-semibold opacity-60">
-                            {`${tablature.artist.name}（${tablature.instrument}・${tablature.strings}弦）`}
-                        </div>
-                    </div>
-                    <div></div>
-                    <div>
-                        {bookmarksIds.has(tablature.id) ? (
-                            <button
-                                className="btn btn-square btn-ghost"
-                                onClick={() => {
-                                    deleteBookmark(tablature.id);
-                                }}
-                            >
-                                <NoBookmarkIcon />
-                            </button>
-                        ) : (
-                            <button
-                                className="btn btn-square btn-ghost"
-                                onClick={() => {
-                                    addBookmark(tablature.id);
-                                }}
-                            >
-                                <BookmarkIcon />
-                            </button>
-                        )}
-                    </div>
-                </li>
+                <TablatureListItem
+                    tablature={tablature}
+                    key={tablature.id}
+                    isBookmarked={bookmarksIds.has(tablature.id)}
+                    addBookmark={addBookmark}
+                    deleteBookmark={deleteBookmark}
+                />
             ))}
         </ul>
     );
