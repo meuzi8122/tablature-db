@@ -1,6 +1,7 @@
 import { Tablature } from "@/clients/cms/tablature";
 import { BookmarkIcon } from "@/components/icon/bookmark-icon";
 import { NoBookmarkIcon } from "@/components/icon/no-bookmark-icon";
+import Link from "next/link";
 
 type Props = {
     tablature: Tablature;
@@ -23,7 +24,10 @@ export function TablatureListItem({ tablature, isBookmarked, addBookmark, delete
                     </a>
                 </div>
                 <div className="text-sm font-semibold opacity-60">
-                    {`${tablature.artist.name}（${tablature.instrument}・${tablature.strings}弦）`}
+                    <Link className="link no-underline" href={`/tablatures/${tablature.artist.id}`}>
+                        {tablature.artist.name}
+                    </Link>
+                    {`（${tablature.instrument}・${tablature.strings}弦）`}
                 </div>
             </div>
             <div></div>
