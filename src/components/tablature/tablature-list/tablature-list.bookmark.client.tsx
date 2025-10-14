@@ -56,6 +56,7 @@ export function ClientBookmarkedTablatureList() {
     );
 
     const result = (() => {
+        if (bookmarkIds.size === 0) return "ブックマークしているTAB譜はありません";
         if (filteredTablatures.length === 0) return "条件に一致するTAB譜が見つかりませんでした";
         return `${filteredTablatures.length}件のTAB譜が見つかりました`;
     })();
