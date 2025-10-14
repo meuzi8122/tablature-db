@@ -10,7 +10,7 @@ export default async function TablatureSearchPage({ params }: Props) {
     const { artistId } = await params;
 
     return (
-        <div className="container mx-auto mb-2 px-6 md:px-0">
+        <div className="container mx-auto mb-2 px-6">
             <TablatureSearch
                 ArtistSection={<ArtistSection artistId={artistId} />}
                 TablatureList={<ServerTablatureList artistId={artistId} />}
