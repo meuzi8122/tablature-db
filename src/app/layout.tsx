@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: "TablatureDB",
-    description: "TAB譜検索",
+    description: "ギター・ベースのTAB譜を検索・共有できるサイト",
 };
 
 export default function RootLayout({
