@@ -14,7 +14,7 @@ export function TablatureListItem({ tablature, isBookmarked, addBookmark, delete
     return (
         <li className="list-row" key={tablature.id}>
             <div>
-                <div className="text-lg">
+                <div className="text-base">
                     <a
                         href={tablature.url}
                         className="link link-primary no-underline"
