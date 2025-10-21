@@ -10,10 +10,12 @@ export const useBookmarks = () => {
 
     const addBookmark = async (id: string) => {
         await db.table(TABLE_NAME).add({ id });
+        alert("ブックマークを追加しました");
     };
 
     const deleteBookmark = async (id: string) => {
         await db.table(TABLE_NAME).delete(id);
+        alert("ブックマークを削除しました");
     };
 
     return { bookmarks, addBookmark, deleteBookmark };
