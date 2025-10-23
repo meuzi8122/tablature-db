@@ -97,8 +97,8 @@ export function TablatureForm() {
                     />
                 </fieldset>
             </div>
-            <div className="flex flex-col space-y-4 shadow-md p-4">
-                <fieldset className="fieldset">
+            <div className="flex flex-col shadow-md p-4">
+                <fieldset className="fieldset mb-2">
                     <legend className="fieldset-legend">楽曲名</legend>
                     <input
                         type="text"
