@@ -1,8 +1,8 @@
 "use client";
 
-import { Instrument } from "@/clients/cms/tablature";
+import { Instrument } from "@/schemas/tablature";
 import { createContext, Suspense, useState } from "react";
-import { OtherInfoSection } from "./other-info-section";
+import { InstrumentSection } from "./instrument-section";
 
 type Props = {
     ArtistSection: React.ReactNode;
@@ -11,24 +11,17 @@ type Props = {
 
 export const TablatureSearchContext = createContext<{
     instrument: Instrument | null;
-    strings: number | null;
 }>({
     instrument: null,
-    strings: null,
 });
 
 export function TablatureSearch({ ArtistSection, TablatureList }: Props) {
     const [instrument, setInstrument] = useState<Instrument | null>(null);
-    const [strings, setStrings] = useState<number | null>(null);
 
     const handleInstrumentButtonClick = (_instrument: Instrument) => {
         setInstrument((currentInstrument) =>
             currentInstrument === _instrument ? null : _instrument,
         );
-    };
-
-    const handleStringsButtonClick = (_strings: number) => {
-        setStrings((currentStrings) => (currentStrings === _strings ? null : _strings));
     };
 
     return (
@@ -47,13 +40,11 @@ export function TablatureSearch({ ArtistSection, TablatureList }: Props) {
             >
                 {ArtistSection}
             </Suspense>
-            <OtherInfoSection
+            <InstrumentSection
                 instrument={instrument}
-                strings={strings}
                 handleInstrumentButtonClick={handleInstrumentButtonClick}
-                handleStringsButtonClick={handleStringsButtonClick}
             />
-            <TablatureSearchContext.Provider value={{ instrument, strings }}>
+            <TablatureSearchContext.Provider value={{ instrument }}>
                 <Suspense
                     fallback={
                         <ul className="list bg-base-100 rounded-box shadow-md">

@@ -12,14 +12,16 @@ type Props = {
 };
 
 export function ClientTablatureList({ artistId, tablatures }: Props) {
-    const { instrument, strings } = useContext(TablatureSearchContext);
+    const { instrument } = useContext(TablatureSearchContext);
 
     const filteredTablatures = tablatures.filter((tablature) => {
         if (instrument && tablature.instrument !== instrument) {
-            return false;
-        }
-
-        if (strings && tablature.strings !== strings) {
+            console.log(
+                tablature.instrument,
+                instrument,
+                tablature.instrument.length,
+                instrument.length,
+            );
             return false;
         }
 

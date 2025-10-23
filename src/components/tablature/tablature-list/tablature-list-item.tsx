@@ -26,8 +26,8 @@ export function TablatureListItem({ tablature, isBookmarked, addBookmark, delete
                 <div className="text-sm font-semibold opacity-60">
                     <Link className="link no-underline" href={`/tablatures/${tablature.artist.id}`}>
                         {tablature.artist.name}
-                    </Link>
-                    {`（${tablature.instrument}・${tablature.strings}弦）`}
+                    </Link>{" "}
+                    / {tablature.instrument}
                 </div>
             </div>
             <div></div>

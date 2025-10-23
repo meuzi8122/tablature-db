@@ -1,21 +1,13 @@
-import { createTablatureSchema } from "@/schemas/tablature";
+import { createTablatureSchema, Instrument } from "@/schemas/tablature";
 import { z } from "zod";
 import type { Artist } from "./artist";
 import { cmsClient } from "./cms-client";
-
-export type Instrument =
-    | "エレキギター"
-    | "アコースティックギター"
-    | "エレキベース"
-    | "アコースティックベース"
-    | "ウクレレ";
 
 export type Tablature = {
     id: string;
     title: string;
     instrument: Instrument;
     url: string;
-    strings: number;
     artist: Artist;
 };
 
@@ -27,7 +19,7 @@ export class TablatureClient {
             await cmsClient.getAllContents<Tablature>({
                 endpoint: this.endpoint,
                 queries: {
-                    fields: "id,title,instrument,,artist.id,artist.name,url,strings",
+                    fields: "id,title,instrument,,artist.id,artist.name,url",
                     filters: `artist[equals]${artistId}`,
                 },
             })
@@ -42,7 +34,7 @@ export class TablatureClient {
             await cmsClient.getList<Tablature>({
                 endpoint: this.endpoint,
                 queries: {
-                    fields: "id,title,instrument,artist.id,artist.name,url,strings",
+                    fields: "id,title,instrument,artist.id,artist.name,url",
                     orders: "-publishedAt",
                     limit: 10,
                 },
@@ -58,7 +50,7 @@ export class TablatureClient {
             await cmsClient.getList<Tablature>({
                 endpoint: this.endpoint,
                 queries: {
-                    fields: "id,title,instrument,artist.id,artist.name,url,strings",
+                    fields: "id,title,instrument,artist.id,artist.name,url",
                     orders: "-publishedAt",
                     filters: ids.map((id) => `id[equals]${id}`).join("[or]"),
                     limit: 10,
@@ -78,7 +70,6 @@ export class TablatureClient {
                 url: tablature.url,
                 artist: tablature.artistId,
                 instrument: [tablature.instrument],
-                strings: tablature.strings,
             },
         });
     }

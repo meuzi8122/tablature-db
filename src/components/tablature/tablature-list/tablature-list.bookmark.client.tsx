@@ -2,8 +2,7 @@
 
 import { Tablature } from "@/clients/cms/tablature";
 import { useBookmarks } from "@/hooks/bookmark";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { TablatureSearchContext } from "../tablature-search";
+import { useEffect, useMemo, useState } from "react";
 import { TablatureListItem } from "./tablature-list-item";
 
 export function ClientBookmarkedTablatureList() {
@@ -13,8 +12,6 @@ export function ClientBookmarkedTablatureList() {
         () => new Set((bookmarks || []).map((bookmark) => bookmark.id)),
         [bookmarks],
     );
-
-    const { instrument, strings } = useContext(TablatureSearchContext);
 
     const [tablatures, setTablatures] = useState<Tablature[]>([]);
 
@@ -39,26 +36,10 @@ export function ClientBookmarkedTablatureList() {
         findTablatures(Array.from(bookmarkIds));
     }, [bookmarkIds]);
 
-    const filteredTablatures = useMemo(
-        () =>
-            tablatures.filter((tablature) => {
-                if (instrument && tablature.instrument !== instrument) {
-                    return false;
-                }
-
-                if (strings && tablature.strings !== strings) {
-                    return false;
-                }
-
-                return true;
-            }),
-        [tablatures, instrument, strings],
-    );
-
     const result = (() => {
         if (bookmarkIds.size === 0) return "ブックマークしているTAB譜はありません";
-        if (filteredTablatures.length === 0) return "条件に一致するTAB譜が見つかりませんでした";
-        return `${filteredTablatures.length}件のTAB譜が見つかりました`;
+        if (tablatures.length === 0) return "ブックマークしているTAB譜を取得できませんでした";
+        return `${tablatures.length}件のTAB譜が見つかりました`;
     })();
 
     return (
@@ -66,7 +47,7 @@ export function ClientBookmarkedTablatureList() {
             <h4>ブックマークしたTAB譜</h4>
             <ul className="list bg-base-100 rounded-box shadow-md">
                 <li className="text-sm p-4 pb-2 opacity-60 tracking-wide">{result}</li>
-                {filteredTablatures.map((tablature) => (
+                {tablatures.map((tablature) => (
                     <TablatureListItem
                         tablature={tablature}
                         key={tablature.id}

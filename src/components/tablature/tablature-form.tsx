@@ -2,18 +2,16 @@
 
 import { createArtist } from "@/actions/artist";
 import { createTablature } from "@/actions/tablature";
-import { type Instrument } from "@/clients/cms/tablature";
 import { COMMON_ERROR_MESSAGE } from "@/constants/tablature";
-import { createTablatureSchema } from "@/schemas/tablature";
+import { createTablatureSchema, Instrument } from "@/schemas/tablature";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { OtherInfoSection } from "./other-info-section";
+import { InstrumentSection } from "./instrument-section";
 
 export function TablatureForm() {
     const router = useRouter();
 
     const [instrument, setInstrument] = useState<Instrument | null>(null);
-    const [strings, setStrings] = useState<number | null>(null);
     const [title, setTitle] = useState<string>("");
     const [url, setUrl] = useState<string>("");
     const [artistName, setArtistName] = useState<string>("");
@@ -23,10 +21,6 @@ export function TablatureForm() {
         setInstrument((currentInstrument) =>
             currentInstrument === _instrument ? null : _instrument,
         );
-    };
-
-    const handleStringsButtonClick = (_strings: number) => {
-        setStrings((currentStrings) => (currentStrings === _strings ? null : _strings));
     };
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +41,6 @@ export function TablatureForm() {
     const handleSubmit = async () => {
         const data = {
             instrument,
-            strings,
             title,
             url,
         };
@@ -76,7 +69,6 @@ export function TablatureForm() {
         const formData = new FormData();
         formData.append("artistId", createArtistResults.artistId);
         formData.append("instrument", submission.data.instrument);
-        formData.append("strings", submission.data.strings.toString());
         formData.append("title", submission.data.title);
         formData.append("url", submission.data.url);
 
@@ -90,11 +82,9 @@ export function TablatureForm() {
 
     return (
         <div className="flex flex-col space-y-4">
-            <OtherInfoSection
+            <InstrumentSection
                 instrument={instrument}
-                strings={strings}
                 handleInstrumentButtonClick={handleInstrumentButtonClick}
-                handleStringsButtonClick={handleStringsButtonClick}
             />
             <div className="flex flex-col space-y-4 shadow-md p-4">
                 <fieldset className="fieldset">
