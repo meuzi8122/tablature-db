@@ -3,7 +3,7 @@ import { MenuIcon } from "./icon/menu-icon";
 
 export function Navbar() {
     return (
-        <div className="navbar bg-base-100 mb-6">
+        <div className="navbar bg-base-100 shadow-sm mb-6">
             <div className="flex-1">
                 <Link href="/" className="btn btn-ghost text-xl font-bold">
                     TablatureDB
