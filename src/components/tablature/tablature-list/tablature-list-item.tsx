@@ -24,7 +24,7 @@ export function TablatureListItem({ tablature, isBookmarked, addBookmark, delete
                     </a>
                 </div>
                 <div className="text-sm font-semibold opacity-60">
-                    <Link className="link no-underline" href={`/tablatures/${tablature.artist.id}`}>
+                    <Link className="link no-underline" href={`/artists/${tablature.artist.id}`}>
                         {tablature.artist.name}
                     </Link>{" "}
                     / {tablature.instrument}

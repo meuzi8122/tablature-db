@@ -16,7 +16,7 @@ export async function ArtistSection({ artistId }: Props) {
                 {artists.map((artist) => (
                     <Link
                         key={artist.id}
-                        href={`/tablatures/${artist.id}`}
+                        href={`/artists/${artist.id}`}
                         className={getButtonClass(artist.id === artistId)}
                     >
                         {artist.name}
