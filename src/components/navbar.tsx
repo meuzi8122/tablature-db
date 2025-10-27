@@ -3,15 +3,15 @@ import { MenuIcon } from "./icon/menu-icon";
 
 export function Navbar() {
     return (
-        <div className="navbar bg-primary shadow-sm mb-6">
+        <div className="navbar bg-base-100 mb-6">
             <div className="flex-1">
-                <Link href="/" className="btn btn-primary text-xl font-bold">
+                <Link href="/" className="btn btn-ghost text-xl font-bold">
                     TablatureDB
                 </Link>
             </div>
             <div className="flex-none">
                 <div className="dropdown dropdown-end">
-                    <div tabIndex={0} role="button" className="btn btn-primary">
+                    <div tabIndex={0} role="button" className="btn btn-ghost">
                         <MenuIcon />
                     </div>
                     <ul
