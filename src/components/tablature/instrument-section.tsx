@@ -14,6 +14,7 @@ export function InstrumentSection({ instrument, handleInstrumentButtonClick }: P
                 {INSTRUMENTS.map((_instrument, index) => (
                     <button
                         key={`${_instrument}-${index}`}
+                        type="button"
                         className={getButtonClass(_instrument === instrument)}
                         onClick={() => handleInstrumentButtonClick(_instrument as Instrument)}
                     >

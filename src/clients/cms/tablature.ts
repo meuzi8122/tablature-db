@@ -1,5 +1,4 @@
-import { createTablatureSchema, Instrument } from "@/schemas/tablature";
-import { z } from "zod";
+import { ContentType, Instrument } from "@/schemas/tablature";
 import type { Artist } from "./artist";
 import { cmsClient } from "./cms-client";
 
@@ -7,6 +6,8 @@ export type Tablature = {
     id: string;
     title: string;
     instrument: Instrument;
+    type: ContentType;
+    // ファイルの場合はファイルのURLが入る
     url: string;
     artist: Artist;
 };
@@ -62,7 +63,9 @@ export class TablatureClient {
         }));
     }
 
-    static async createTablature(tablature: z.infer<typeof createTablatureSchema>) {
+    static async createTablature(
+        tablature: Omit<Tablature, "id" | "artist"> & { artistId: string },
+    ) {
         await cmsClient.create({
             endpoint: this.endpoint,
             content: {
