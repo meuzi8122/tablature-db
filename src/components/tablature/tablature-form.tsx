@@ -3,7 +3,7 @@
 import { createTablature } from "@/actions/tablature";
 import { ContentType, Instrument } from "@/schemas/tablature";
 import Form from "next/form";
-import { ChangeEvent, useActionState, useState } from "react";
+import { ChangeEvent, useActionState, useEffect, useRef, useState } from "react";
 import { InstrumentSection } from "./instrument-section";
 
 export function TablatureForm() {
@@ -28,6 +28,15 @@ export function TablatureForm() {
         formData.append("instrument", instrument || "");
         action(formData);
     };
+
+    const urlContentRef = useRef<HTMLInputElement>(null!);
+
+    useEffect(() => {
+        // ファイルにチェックを入れると、submit後にurlにチェックが入る（デフォルトチェック）がcontentTypeをFILEのままになるため
+        if (urlContentRef.current.checked) {
+            setContentType("URL");
+        }
+    }, [isPending]);
 
     return (
         <Form action={handleSubmit}>
@@ -61,6 +70,7 @@ export function TablatureForm() {
                                         defaultChecked
                                         onChange={handleContentTypeChange}
                                         value="URL"
+                                        ref={urlContentRef}
                                     />
                                     <span className="label-text">URL</span>
                                 </label>
